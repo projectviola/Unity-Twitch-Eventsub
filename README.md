@@ -18,8 +18,11 @@ This project provides a simple integration of Twitch's EventSub API for Unity pr
 
 ## Setup
 
-1. Add the `TwitchManager` script to a GameObject in your Unity scene.
-2. Set your Twitch application's Client ID in the `TwitchManager` component in the Inspector.
+1. Register to Twitch Developers and register your app.
+	- If you want to use Twitch CLI for testing. Make sure to choose "Client Type" as "Confidential" and generate your "Client Secret" for local mock server setup.
+	- Note that "Client Secret" is no longer needed for websocket API connection but needed for Twitch CLI to function.
+2. Add the `TwitchManager` script to a GameObject in your Unity scene.
+3. Set your Twitch application's Client ID in the `TwitchManager` component in the Inspector.
 
 ## Usage
 
