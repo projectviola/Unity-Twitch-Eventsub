@@ -26,10 +26,10 @@ public class EventSubHandler : MonoBehaviour, IEventHandler
 {
     public void OnChatMessage(Event chatEvent)
     {
+	// Implement other functionality here
         Debug.Log($"Chat message from {chatEvent.chatter_user_name}: {chatEvent.message.text}");
     }
 
-    // Implement other event handlers...
 }
 ```
 
