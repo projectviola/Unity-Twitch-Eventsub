@@ -155,7 +155,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                         HandleNotification(message);
                         break;
                     case "session_keepalive":
-                        Debug.Log("Received keepalive message");
                         break;
                     case "revocation":
                         HandleRevocation(message);
@@ -178,7 +177,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             if (message.payload?.session != null)
             {
                 sessionId = message.payload.session.id;
-                Debug.Log($"Received session ID: {sessionId}");
                 StartCoroutine(SubscribeToAllEvents());
             }
             else
@@ -190,8 +188,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
 
         private void HandleNotification(EventSubMessage message)
         {
-            Debug.Log($"Received notification of type: {message.metadata.subscription_type}");
-
             switch (message.metadata.subscription_type)
             {
                 case "channel.chat.message":
@@ -216,22 +212,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                     Debug.LogWarning($"Unhandled notification type: {message.metadata.subscription_type}");
                     break;
             }
-        }
-
-        private void HandleChatMessage(Event chatEvent)
-        {
-            Debug.Log($"Chat message from {chatEvent.chatter_user_name}: {chatEvent.message.text}");
-
-            // Process badges
-            if (chatEvent.badges != null && chatEvent.badges.Count > 0)
-            {
-                foreach (var badge in chatEvent.badges)
-                {
-                    Debug.Log($"Badge: {badge.BadgeSetId} - {badge.BadgeId} - Info: {badge.BadgeInfo}");
-                }
-            }
-
-            // Rest of your chat message handling code...
         }
 
         private void HandleRevocation(EventSubMessage message)

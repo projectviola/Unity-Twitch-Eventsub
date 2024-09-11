@@ -122,5 +122,3 @@ using ProjectViola.Unity.TwitchAPI.EventSub;
         eventSubClient.Connect();
     }
 }
-
-

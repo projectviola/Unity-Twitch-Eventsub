@@ -35,7 +35,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         public void SetAccessToken(string accessToken)
         {
             AccessToken = accessToken;
-            Debug.Log("Access token set successfully");
         }
 
         public IEnumerator ValidateToken()
@@ -53,7 +52,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 }
                 else
                 {
-                    Debug.Log("Token validated successfully");
                     JObject response = JObject.Parse(www.downloadHandler.text);
                     UserId = response["user_id"].ToString();
                     UserLogin = response["login"].ToString();
@@ -84,8 +82,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                         JObject userData = (JObject)dataArray[0];
                         UserId = userData["id"].ToString();
                         UserLogin = userData["login"].ToString();
-                        UserName = userData["display_name"].ToString();  // Set the UserName property
-                        Debug.Log($"Got user info: ID={UserId}, Login={UserLogin}, Name={UserName}");
+                        UserName = userData["display_name"].ToString();
                     }
                     else
                     {
