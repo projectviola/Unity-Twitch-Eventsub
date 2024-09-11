@@ -2,6 +2,12 @@
 
 This project provides a simple integration of Twitch's EventSub API for Unity projects. It allows developers to easily incorporate Twitch events into their Unity games or applications.
 
+## Dependencies
+
+- System.Net is required. (No WebGL support)
+- NativeWebSocket is required. (There is no way around this; You'll have to get it using Unity Package Manager)
+	- https://github.com/endel/NativeWebSocket.git
+
 ## Features
 
 - Easy setup with minimal configuration
@@ -50,6 +56,7 @@ Feel free to modify and extend the functionality to suit your project's needs. Y
 
 - Currently supports a limited set of Twitch events (Raids, Chat Messages, Subscriptions, Gifted Subs, and Follows)
 - Requires a Twitch Developer application for authentication when not using the mock server
+- System.net is required. There is no way to implement this package into a WebGL project.
 
 ## License
 
