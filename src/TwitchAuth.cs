@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using System.Collections;
-using Newtonsoft.Json.Linq;
 
 
 namespace ProjectViola.Unity.TwitchAPI.EventSub
@@ -52,9 +51,10 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 }
                 else
                 {
-                    JObject response = JObject.Parse(www.downloadHandler.text);
-                    UserId = response["user_id"].ToString();
-                    UserLogin = response["login"].ToString();
+                    Debug.Log("Token validated successfully");
+                    ValidateResponse response = JsonUtility.FromJson<ValidateResponse>(www.downloadHandler.text);
+                    UserId = response.user_id;
+                    UserLogin = response.login;
                 }
             }
         }
@@ -76,13 +76,14 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 else
                 {
                     string responseText = www.downloadHandler.text;
-                    JObject response = JObject.Parse(responseText);
-                    if (response["data"] is JArray dataArray && dataArray.Count > 0)
+                    UserInfoResponse response = JsonUtility.FromJson<UserInfoResponse>(responseText);
+                    if (response.data != null && response.data.Length > 0)
                     {
-                        JObject userData = (JObject)dataArray[0];
-                        UserId = userData["id"].ToString();
-                        UserLogin = userData["login"].ToString();
-                        UserName = userData["display_name"].ToString();
+                        UserData userData = response.data[0];
+                        UserId = userData.id;
+                        UserLogin = userData.login;
+                        UserName = userData.display_name;  // Corrected this line
+                        Debug.Log($"Got user info: ID={UserId}, Login={UserLogin}, Name={UserName}");
                     }
                     else
                     {
@@ -104,6 +105,17 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             public string id;
             public string login;
             public string display_name;
+        }
+
+        [System.Serializable]
+        private class ValidateResponse
+        {
+            public string client_id;
+            public string login;
+            public string[] scopes;
+            public string user_id;
+            public string display_name;
+            public int expires_in;
         }
     }
 }

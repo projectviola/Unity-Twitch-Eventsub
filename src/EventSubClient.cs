@@ -5,7 +5,6 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using NativeWebSocket;
-using Newtonsoft.Json;
 
 namespace ProjectViola.Unity.TwitchAPI.EventSub
 {
@@ -144,7 +143,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         {
             try
             {
-                var message = JsonConvert.DeserializeObject<EventSubMessage>(jsonMessage);
+                EventSubMessage message = JsonUtility.FromJson<EventSubMessage>(jsonMessage);
 
                 switch (message.metadata.message_type)
                 {
@@ -182,7 +181,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             else
             {
                 Debug.LogError("Failed to get session ID from welcome message.");
-                Debug.LogError($"Welcome message content: {JsonConvert.SerializeObject(message)}");
+                Debug.LogError($"Welcome message content: {JsonUtility.ToJson(message)}");
             }
         }
 
@@ -264,7 +263,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 }
             };
 
-            string jsonBody = JsonConvert.SerializeObject(subscriptionData);
+            string jsonBody = JsonUtility.ToJson(subscriptionData);
 
             using (UnityWebRequest request = new UnityWebRequest(currentApiUrl, "POST"))
             {

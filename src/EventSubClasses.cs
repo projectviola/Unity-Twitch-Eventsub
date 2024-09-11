@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace ProjectViola.Unity.TwitchAPI.EventSub
@@ -76,7 +75,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         public string message_id { get; set; }
         public ChatMessage message { get; set; }
         public string color { get; set; }
-        public List<ChatBadge> badges { get; set; }
+        public List<Badge> badges { get; set; }
         public string message_type { get; set; }
 
         // Bits event specific fields
@@ -138,15 +137,12 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
     }
 
     [System.Serializable]
-    public class ChatBadge
+    public class Badge
     {
-        [JsonProperty("set_id")]
         public string BadgeSetId { get; set; }
 
-        [JsonProperty("id")]
         public string BadgeId { get; set; }
 
-        [JsonProperty("info")]
         public string BadgeInfo { get; set; }
     }
 
