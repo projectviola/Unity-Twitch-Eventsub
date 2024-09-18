@@ -27,6 +27,9 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         private string currentApiUrl;
         private bool useMockServer;
 
+        // Duplicate Message Prevention
+        private Queue<string> processedMessageIds = new Queue<string>(50);
+
         public bool ConnectionEstablished 
         {
             get 
@@ -145,6 +148,8 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             {
                 EventSubMessage message = JsonUtility.FromJson<EventSubMessage>(jsonMessage);
 
+                if (IsMessageDuplicate(message.metadata.message_id)) return; // It's a duplicate
+
                 switch (message.metadata.message_type)
                 {
                     case "session_welcome":
@@ -169,6 +174,28 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 Debug.LogError($"Stack Trace: {e.StackTrace}");
                 Debug.LogError($"Message: {jsonMessage}");
             }
+        }
+
+        private bool IsMessageDuplicate(string messageId)
+        {
+            if (string.IsNullOrEmpty(messageId))
+            {
+                return false; 
+            }
+
+            if (processedMessageIds.Contains(messageId))
+            {
+                return true; 
+            }
+
+            processedMessageIds.Enqueue(messageId);
+
+            if (processedMessageIds.Count > 50)
+            {
+                processedMessageIds.Dequeue();
+            }
+
+            return false;
         }
 
         private void HandleWelcomeMessage(EventSubMessage message)
