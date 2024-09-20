@@ -6,7 +6,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
     public class EventSubMessage
     {
         public Metadata metadata { get; set; }
-        public Payload payload { get; set; }
+        public PayloadWrapper payload { get; set; }
     }
 
     [System.Serializable]
@@ -17,6 +17,14 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         public string message_timestamp { get; set; }
         public string subscription_type { get; set; }
         public string subscription_version { get; set; }
+    }
+
+    [System.Serializable]
+    public class PayloadWrapper
+    {
+        public Subscription subscription { get; set; }
+        public Session session { get; set; }
+        public Event @event { get; set; }
     }
 
     [System.Serializable]
@@ -45,9 +53,10 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
     {
         public string id { get; set; }
         public string status { get; set; }
+        public string connected_at { get; set; }
         public int keepalive_timeout_seconds { get; set; }
         public string reconnect_url { get; set; }
-        public string connected_at { get; set; }
+        public string recovery_url { get; set; }
     }
 
     [System.Serializable]

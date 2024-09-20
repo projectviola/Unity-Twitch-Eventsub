@@ -5,8 +5,16 @@ This project provides a simple integration of Twitch's EventSub API for Unity pr
 ## Dependencies
 
 - System.Net is required. (No WebGL support)
-- NativeWebSocket is required. (There is no way around this; You'll have to get it using Unity Package Manager)
+- NativeWebSocket
+	- Needed for websocket functionality.
+	- Use Unity's native package manager to acquire the package.
+	- A native Unity Package.
+	- Use Unity's package manager to acquire the package.
 	- https://github.com/endel/NativeWebSocket.git
+- Newtonsoft Json
+	- Added for advanced json serialization and deserialization functionality.
+	- A native Unity package.
+	- Use Unity's package manager to acquire the package.
 
 ## Features
 

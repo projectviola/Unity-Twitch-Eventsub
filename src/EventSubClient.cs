@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using NativeWebSocket;
+using Newtonsoft.Json;
 
 namespace ProjectViola.Unity.TwitchAPI.EventSub
 {
@@ -146,8 +147,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         {
             try
             {
-                EventSubMessage message = JsonUtility.FromJson<EventSubMessage>(jsonMessage);
-
+                EventSubMessage message = JsonConvert.DeserializeObject<EventSubMessage>(jsonMessage);
                 if (IsMessageDuplicate(message.metadata.message_id)) return; // It's a duplicate
 
                 switch (message.metadata.message_type)
@@ -156,6 +156,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                         HandleWelcomeMessage(message);
                         break;
                     case "notification":
+                        
                         HandleNotification(message);
                         break;
                     case "session_keepalive":
@@ -208,7 +209,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             else
             {
                 Debug.LogError("Failed to get session ID from welcome message.");
-                Debug.LogError($"Welcome message content: {JsonUtility.ToJson(message)}");
+                Debug.LogError($"Welcome message content: {JsonConvert.SerializeObject(message)}");
             }
         }
 
@@ -290,7 +291,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 }
             };
 
-            string jsonBody = JsonUtility.ToJson(subscriptionData);
+            string jsonBody = JsonConvert.SerializeObject(subscriptionData);
 
             using (UnityWebRequest request = new UnityWebRequest(currentApiUrl, "POST"))
             {

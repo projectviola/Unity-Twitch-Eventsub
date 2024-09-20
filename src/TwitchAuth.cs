@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using System.Collections;
+using Newtonsoft.Json;
 
 
 namespace ProjectViola.Unity.TwitchAPI.EventSub
@@ -52,7 +53,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 else
                 {
                     Debug.Log("Token validated successfully");
-                    ValidateResponse response = JsonUtility.FromJson<ValidateResponse>(www.downloadHandler.text);
+                    ValidateResponse response = JsonConvert.DeserializeObject<ValidateResponse>(www.downloadHandler.text);
                     UserId = response.user_id;
                     UserLogin = response.login;
                 }
@@ -76,7 +77,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 else
                 {
                     string responseText = www.downloadHandler.text;
-                    UserInfoResponse response = JsonUtility.FromJson<UserInfoResponse>(responseText);
+                    UserInfoResponse response = JsonConvert.DeserializeObject<UserInfoResponse>(responseText);
                     if (response.data != null && response.data.Length > 0)
                     {
                         UserData userData = response.data[0];
