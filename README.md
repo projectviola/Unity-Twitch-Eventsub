@@ -6,7 +6,7 @@ This project provides a simple integration of Twitch's EventSub API for Unity pr
 
 - System.Net is required. (No WebGL support)
 - NativeWebSocket
-	- Needed for websocket functionality.
+	- Needed for WebSocket functionality.
 	- A native Unity Package.
 	- Use Unity's package manager to acquire the package.
 	- https://github.com/endel/NativeWebSocket.git
@@ -57,6 +57,25 @@ To test your integration without connecting to the live Twitch API, you can use 
 2. In the Unity Inspector, find the `TwitchManager` component and enable the "Use Mock Server" toggle.
 
 This will direct all API calls to the local mock server instead of the live Twitch API, allowing for easier testing and development.
+
+To setup the server:
+1. You need to first install Twitch CLI.
+	- https://github.com/twitchdev/twitch-cli
+2. Configure your Twitch CLI by setting your Client ID and Client Secret.
+	- Initiate the setup process by using "twitch configure" command.
+3. Start your server with WebSocket functionality.
+
+```bash
+twitch event websocket start-server
+```
+
+4. You can use event triggers to test your code.
+
+Example:
+
+```bash
+twitch event trigger channel.subscribe --transport=websocket
+```
 
 ## Customization
 
