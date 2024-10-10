@@ -49,6 +49,25 @@ public class EventSubHandler : MonoBehaviour, IEventHandler
 }
 ```
 
+Helix Message Functionality Example:
+
+```csharp
+
+
+public class YourClass : MonoBehaviour
+{
+    // Assign TwitchManager first
+    public TwitchManager TwitchManager;
+
+    public void SendTwitchChat(string message) 
+    {
+        TwitchManager.SendChatMessage(message);
+        TwitchManager.SendAnnouncement(message);
+    }
+}
+
+```
+
 ## Mock Server Testing
 
 To test your integration without connecting to the live Twitch API, you can use the Twitch CLI mock server:

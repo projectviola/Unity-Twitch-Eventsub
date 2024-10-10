@@ -9,15 +9,24 @@ using ProjectViola.Unity.TwitchAPI.EventSub;
     public string clientId;
     public bool useMockServer = false;
     public bool forceReauthentication = false;
+    public bool dontRunInEditor = false;
 
     private TwitchOAuth twitchOAuth;
     private EventSubClient eventSubClient;
     private EventSubHandler eventHandler;
     private LocalCallbackServer callbackServer;
+    private TwitchChatSender chatSender;
 
     private void Start()
     {
+#if UNITY_EDITOR
+        if (!dontRunInEditor) 
+        {
+            StartCoroutine(InitializeTwitch());
+        }
+#else
         StartCoroutine(InitializeTwitch());
+#endif
     }
 
     private IEnumerator InitializeTwitch()
@@ -44,6 +53,7 @@ using ProjectViola.Unity.TwitchAPI.EventSub;
                     if (isValid)
                     {
                         ConnectToEventSub();
+                        InitializeChatSender();
                     }
                     else
                     {
@@ -99,6 +109,7 @@ using ProjectViola.Unity.TwitchAPI.EventSub;
             );
 
             ConnectToEventSub();
+            InitializeChatSender();
         }
         else
         {
@@ -120,5 +131,41 @@ using ProjectViola.Unity.TwitchAPI.EventSub;
             useMockServer
         );
         eventSubClient.Connect();
+    }
+
+    private void InitializeChatSender()
+    {
+        chatSender = gameObject.AddComponent<TwitchChatSender>();
+        chatSender.Initialize(
+            TwitchCredentials.GetClientId(),
+            TwitchCredentials.GetAccessToken(),
+            TwitchCredentials.GetUserId(),
+            TwitchCredentials.GetUserId()  // Using the same ID for broadcaster and sender
+        );
+    }
+
+    // Public methods to send chat messages and announcements
+    public void SendChatMessage(string message, string replyParentMessageId = null)
+    {
+        if (chatSender != null)
+        {
+            chatSender.SendChatMessage(message, replyParentMessageId);
+        }
+        else
+        {
+            Debug.LogError("TwitchChatSender is not initialized");
+        }
+    }
+
+    public void SendAnnouncement(string message, string color = "primary")
+    {
+        if (chatSender != null)
+        {
+            chatSender.SendAnnouncement(message, color);
+        }
+        else
+        {
+            Debug.LogError("TwitchChatSender is not initialized");
+        }
     }
 }

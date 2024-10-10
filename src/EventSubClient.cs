@@ -156,7 +156,6 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                         HandleWelcomeMessage(message);
                         break;
                     case "notification":
-                        
                         HandleNotification(message);
                         break;
                     case "session_keepalive":
@@ -213,6 +212,18 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             }
         }
 
+        private void HandleChannelPointsRedemption(EventSubMessage message)
+        {
+            if (message.payload?.@event != null)
+            {
+                var redemptionEvent = message.payload.@event;
+
+                // You can add more custom logic here to handle the redemption
+                eventHandler.OnChannelPointsRedemption(redemptionEvent);
+            }
+        }
+
+
         private void HandleNotification(EventSubMessage message)
         {
             switch (message.metadata.subscription_type)
@@ -226,6 +237,9 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                 case "channel.subscribe":
                     eventHandler.OnSubscription(message.payload.@event);
                     break;
+                case "channel.subscription.message":
+                    eventHandler.OnSubscriptionMessage(message.payload.@event);
+                    break;
                 case "channel.subscription.gift":
                     eventHandler.OnSubscriptionGift(message.payload.@event);
                     break;
@@ -234,6 +248,9 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
                     break;
                 case "channel.raid":
                     eventHandler.OnRaid(message.payload.@event);
+                    break;
+                case "channel.channel_points_custom_reward_redemption.add":
+                    HandleChannelPointsRedemption(message);
                     break;
                 default:
                     Debug.LogWarning($"Unhandled notification type: {message.metadata.subscription_type}");
@@ -266,7 +283,12 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
             yield return SubscribeToEvent("channel.raid", "1", new Dictionary<string, string> {
             {"to_broadcaster_user_id", userId}
             });
-
+            yield return SubscribeToEvent("channel.subscription.message", "1", new Dictionary<string, string> {
+            {"broadcaster_user_id", userId}
+            });
+            yield return SubscribeToEvent("channel.channel_points_custom_reward_redemption.add", "1", new Dictionary<string, string> {
+                {"broadcaster_user_id", userId}
+            });
             // Only subscribe to chat messages if not using the mock server
             if (!useMockServer)
             {
@@ -344,5 +366,8 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         void OnSubscriptionGift(Event giftSubscriptionEvent);
         void OnCheer(Event cheerEvent);
         void OnRaid(Event raidEvent);
+        void OnSubscriptionMessage(Event subscriptionMessageEvent);
+
+        void OnChannelPointsRedemption(Event redemptionEvent);
     }
 }

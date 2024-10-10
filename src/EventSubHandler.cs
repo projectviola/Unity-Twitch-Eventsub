@@ -1,6 +1,7 @@
 using UnityEngine;
 using ProjectViola.Unity.TwitchAPI.EventSub;
 using Event = ProjectViola.Unity.TwitchAPI.EventSub.Event;
+using System;
 
 public class EventSubHandler : MonoBehaviour, IEventHandler
 {
@@ -30,6 +31,22 @@ public class EventSubHandler : MonoBehaviour, IEventHandler
         if (!subscriptionEvent.is_gift) // Don't want gifts to show up
         {
             Debug.Log($"{subscriptionEvent.user_name} subscribed to the channel!");
+        }
+    }
+
+    public void OnSubscriptionMessage(Event subscriptionMessageEvent) 
+    {
+        Debug.Log($"{subscriptionMessageEvent.user_name} resubscribed for {subscriptionMessageEvent.cumulative_months} months with message: {subscriptionMessageEvent.message.text}");
+    }
+
+    public void OnChannelPointsRedemption(Event redemptionEvent)
+    {
+        Debug.Log($"Channel Points Redeemed: {redemptionEvent.user_name} redeemed {redemptionEvent.reward.title}");
+        Debug.Log($"Reward details: Cost: {redemptionEvent.reward.cost}, Status: {redemptionEvent.status}");
+
+        if (!string.IsNullOrEmpty(redemptionEvent.user_input))
+        {
+            Debug.Log($"User input: {redemptionEvent.user_input}");
         }
     }
 

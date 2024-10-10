@@ -27,7 +27,7 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
 
         public void StartAuthorizationFlow()
         {
-            string scopes = "chat:read channel:read:subscriptions bits:read channel:read:redemptions moderator:read:followers user:read:email user:read:chat";
+            string scopes = "chat:read channel:read:subscriptions bits:read channel:read:redemptions moderator:read:followers user:read:email user:read:chat user:write:chat";
             string authorizationUrl = $"{AuthorizationEndpoint}?client_id={ClientId}&redirect_uri={RedirectUri}&response_type=token&scope={Uri.EscapeDataString(scopes)}";
             Application.OpenURL(authorizationUrl);
         }

@@ -109,7 +109,26 @@ namespace ProjectViola.Unity.TwitchAPI.EventSub
         public string gifter_user_name { get; set; }
         public int total { get; set; }
         public int cumulative_total { get; set; }
+        public int cumulative_months { get; set; }
+        public int streak_months { get; set; }
+        public int duration_months { get; set; }
         public bool is_anonymous { get; set; }
+
+        // Channel points spesific fields
+        public string reward_id { get; set; }
+        public Reward reward { get; set; }
+        public string user_input { get; set; }
+        public string status { get; set; }
+        public string redeemed_at { get; set; }
+    }
+
+    [System.Serializable]
+    public class Reward
+    {
+        public string id { get; set; }
+        public string title { get; set; }
+        public int cost { get; set; }
+        public string prompt { get; set; }
     }
 
     [System.Serializable]
