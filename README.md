@@ -102,7 +102,7 @@ Feel free to modify and extend the functionality to suit your project's needs. Y
 
 ## Limitations
 
-- Currently supports a limited set of Twitch events (Raids, Chat Messages, Subscriptions, Gifted Subs, and Follows)
+- Currently supports a limited set of Twitch events (Raids, Chat Messages, Subscriptions, Gifted Subs, Reward Redeems, Sending Messages and Follows)
 - Requires a Twitch Developer application for authentication when not using the mock server
 - System.net is required. There is no way to implement this package into a WebGL project.
 
